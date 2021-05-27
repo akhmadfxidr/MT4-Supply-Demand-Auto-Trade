@@ -1,6 +1,6 @@
 #property strict
 #property version   "777.20"
-#property copyright "Copyright © 2021, [MP161__BNB__SND__EA (Rev 5_1)]"
+#property copyright "Copyright © 2021, [__BNB__SND__EA (Rev 5_1)]"
 ////////
 color BullColor = clrLime;
 color BearColor = clrRed;
