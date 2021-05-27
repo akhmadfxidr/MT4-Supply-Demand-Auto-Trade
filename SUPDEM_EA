@@ -1,0 +1,2066 @@
+#property strict
+#property version   "777.20"
+#property copyright "Copyright © 2021, [MP161__BNB__SND__EA (Rev 5_1)]"
+////////
+color BullColor = clrLime;
+color BearColor = clrRed;
+////////
+//////
+ bool  Multi_TF_BNB_Algo = true;
+        string Set_1                       = "--Time Filter--";
+        string Set_1_Noted                 = "--Using Broker Server Time--";
+        int    Start_Hour                  = 3;
+        int    End_Hour                    = 21;
+////////////////////////////////////////////////////////////////////////
+extern string           SUPDEM_SET_UP         = "## SND ENTRY SETUP ##";           
+extern ENUM_TIMEFRAMES  TIME_FRAME_SND        = PERIOD_M30;
+
+extern string           BNB_ENTRY_SETUP       = "## BNB ENTRY SETUP ##";
+extern int              PERIODE_BNB_ENTRY     = 10;
+extern ENUM_TIMEFRAMES  TIMEFRAME_BNB_ENTRY   = PERIOD_M5;
+
+extern string           BNB_CLOSING_SETUP     = "## BNB EXIT SETUP ##";
+extern int              PERIODE_BNB_CLOSING   = 10;
+extern ENUM_TIMEFRAMES  TIMEFRAME_BNB_CLOSING = PERIOD_M5;
+extern bool             __AUTO_CLOSING__      = true;
+
+extern string           SND_CLOSING_SETUP     = "## SND EXIT SETUP ##";
+extern bool             SND_AUTO_CLOSING_     = false;
+
+input string            TOMBOL_MANUAL         = "## MANUAL TOMBOL Trade ##";
+input bool           Munculkan_Tombol_Trade   = false;
+input int               Magic_Number          = 1122;
+input double            LOT_SIZE_             = 0.01;
+
+input string            Trade_Set_AUTO        = "## AUTO Trade Setting ##";
+input double            LOT_SIZE_AUTO_TRADE   = 0.03;
+input bool              ON_KAN_AUTOTRADE_Ke_1 = true;
+ bool              ON_KAN_AUTOTRADE_Ke_2 = false;
+ bool              ON_KAN_AUTOTRADE_Ke_3 = false;
+ bool              ON_KAN_AUTOTRADE_Ke_4 = false;
+ bool              ON_KAN_AUTOTRADE_Ke_5 = false;
+ bool              ON_KAN_AUTOTRADE_Ke_6 = false;
+ bool              ON_KAN_AUTOTRADE_Ke_7 = false;
+ bool              ON_KAN_AUTOTRADE_Ke_8 = false;
+ bool              ON_KAN_AUTOTRADE_Ke_9 = false;
+ 
+     int          Magic_Number_Buy_OP_2  = 1281;
+     int          Magic_Number_Sell_OP_2 = 8123;
+     int          Magic_Number_Buy_OP_3  = 1181;
+     int          Magic_Number_Sell_OP_3 = 8223;
+     int          Magic_Number_Buy_OP_4  = 1381;
+     int          Magic_Number_Sell_OP_4 = 8423;
+     int          Magic_Number_Buy_OP_5  = 1581;
+     int          Magic_Number_Sell_OP_5 = 8623;
+     int          Magic_Number_Buy_OP_6  = 1781;
+     int          Magic_Number_Sell_OP_6 = 8823;
+     int          Magic_Number_Buy_OP_7  = 1981;
+     int          Magic_Number_Sell_OP_7 = 9123;
+     int          Magic_Number_Buy_OP_8  = 7281;
+     int          Magic_Number_Sell_OP_8 = 4123;
+     int          Magic_Number_Buy_OP_9  = 5281;
+     int          Magic_Number_Sell_OP_9 = 6123;
+
+input string            TP_SL_IN_MONEY        = "## MANUAL TP/SL IN MONEY ##";
+input double            TAKE_PROFIT_NYA       = 1000.0;
+input double            STOP_LOSS_NYA         = -1000.0;
+
+input string            SL_SND_AUTO           = "## AUTO SL SND ##";
+input bool              AUTO_SL_SND           = true;
+
+input string            Magic__Number_Auto    = "## MAGIC NUMBER AUTO TRADE ##";
+extern     int          Magic_Number_Buy_OP_1  = 4352;
+extern     int          Magic_Number_Sell_OP_1 = 3847;
+
+input string            SELL_OR_BUY_ONLY       = "## SELL OR BUY ONLY ##";
+extern     bool         Buy_Auto_Activated     = true;
+extern     bool         Sell_Auto_Activated    = true;
+
+ bool              ON_KAN_ORDER_KE_2   = false;
+ bool              ON_KAN_ORDER_KE_3   = false;
+ string            Set_002             = "## Closing Equity Setting ##";
+ bool              Pake_Equity_Target  = false;
+ double            Account_Balance     = 100000;
+ double            Equity_Target       = 20;
+ double            Target_Harian       = 1000;
+ string            Set_003             = "## Closing All Now ##";
+ bool              Closing_ALL___Now   = false;
+ string            Auto_Jarak_Order    = "## AUTO JARAK TIAP OP ##";
+ bool              Use_Max_Min_Distance= false;
+ double            Max_Min_Distance    = 2000.0;
+
+ bool    One_Time_Closing      = false;
+ int     Targeted_Profit       = 20;//
+ string  Pair_2                = "NONE";
+
+ string       Box_Position_Set          = "## Signal Box Position ##";
+ int          X_axis                    = 10;
+ int          Y_axis                    = 180;
+ int          Z_axis                    = 75;
+ int          Font_Size                 = 10;
+
+///////////////////////////////////////////////////////////////////////////////
+      string       Pair_Suffix               = "## Pair Name Suffix ##";
+      string       Symbol_Suffix             = "fw";
+      int          Max_Jumlah_Pair           = 1;
+      
+
+///////////////////////////////////////////////////////////////////////////////
+
+string button_close_basket_All = "btn_Close ALL"; 
+string button_buy_basket_1     = "btn_buy_basket";  
+string button_sell_basket_1    = "btn_sell_basket";
+string button_close_basket_1   = "btn_Close Order";
+string button_buy_basket_2     = "btn_buy_basket2";  
+string button_sell_basket_2    = "btn_sell_basket2";
+string button_close_basket_2   = "btn_Close Order2";
+string button_buy_basket_3     = "btn_buy_basket3";  
+string button_sell_basket_3    = "btn_sell_basket3";
+string button_close_basket_3   = "btn_Close Order3";
+string button_buy_basket_4     = "btn_buy_basket4";  
+string button_sell_basket_4    = "btn_sell_basket4";
+string button_close_basket_4   = "btn_Close Order4";
+string button_buy_basket_5     = "btn_buy_basket5";  
+string button_sell_basket_5    = "btn_sell_basket5";
+string button_close_basket_5   = "btn_Close Order5";
+string button_buy_basket_6     = "btn_buy_basket6";  
+string button_sell_basket_6    = "btn_sell_basket6";
+string button_close_basket_6   = "btn_Close Order6";
+string button_buy_basket_7     = "btn_buy_basket7";  
+string button_sell_basket_7    = "btn_sell_basket7";
+string button_close_basket_7   = "btn_Close Order7";
+string button_buy_basket_8     = "btn_buy_basket8";  
+string button_sell_basket_8    = "btn_sell_basket8";
+string button_close_basket_8   = "btn_Close Order8";
+string button_buy_basket_9     = "btn_buy_basket9";  
+string button_sell_basket_9    = "btn_sell_basket9";
+string button_close_basket_9   = "btn_Close Order9";
+ 
+string _font="Consolas";
+color  ProfitColor,ProfitColor1,ProfitColor2,ProfitColor3,PipsColor,PipsColor2,PipsColor3,Color,Color1,Color2,Color3,Color4,Color5,Color6,Color7,Color8,Color9,Color10,
+       Color11,LotColor,LotColor1,OrdColor,OrdColor1
+       ,PipsColor4,PipsColor5,PipsColor6,PipsColor7,PipsColor8,PipsColor9;
+color  BackGrnCol =clrDarkGray;
+color  LineColor=clrBlack;
+color  TextColor=clrBlack;
+int    tickeT,pipsfactor;//
+int    orders  = 0;
+bool   CloseAll;
+int    SymbolCount;
+
+
+string Sinyal_bnb_ENTRY_OP  = "MENUNGGU...";
+string Sinyal_bnb_EXIT_OP   = "MENUNGGU...";
+string Sinyal_snd_OP_1      = "MENUNGGU...";//Muncul 1x snd merah/biru yg tersentuh.
+string Sinyal_snd_OP_1_2x   = "MENUNGGU...";//Muncul 2x snd merah/biru tapi tdh tersentuh.
+string Sinyal_snd_OP_2      = "MENUNGGU...";
+string Sinyal_snd_OP_3      = "MENUNGGU...";
+string Sinyal_snd_OP_4      = "MENUNGGU...";
+string Sinyal_snd_OP_5      = "MENUNGGU...";
+string Sinyal_snd_OP_6      = "MENUNGGU...";
+string Sinyal_snd_OP_7      = "MENUNGGU...";
+string Sinyal_snd_OP_8      = "MENUNGGU...";
+string Sinyal_snd_OP_9      = "MENUNGGU...";
+//
+int Max_Op     = 0;
+int index_indi = 0;
+double keuntungan;
+int    totalorder, totalorderB, totalorderS;
+
+
+double BNB_ENTRI_SINYAL_UP  = 0;
+double BNB_ENTRI_SINYAL_DOWN = 0;
+double BNB_EXIT_SINYAL_UP  = 0;
+double BNB_EXIT_SINYAL_DOWN = 0;
+double Sinyal_Buy_03_  = 0;
+double Sinyal_Sell_03_ = 0;
+
+double BnB_01_MA_KUNING, BnB_01_MA_BIRU;
+double BnB_02_MA_KUNING, BnB_02_MA_BIRU;
+double BnB_03_MA_KUNING, BnB_03_MA_BIRU;
+double BnB_04_MA_KUNING, BnB_04_MA_BIRU;
+double BnB_01, BnB_02, BnB_03, BnB_04;
+
+//
+double    ExtBuffer1_1[50];
+double    ExtBuffer2_1[50];
+double    BUFFER_BNB_ENTRY[50];
+//double    ExtSignalBuffer_1[50];
+double    prev_1,current_1;
+
+double    ExtBuffer1_2[50];
+double    ExtBuffer2_2[50];
+double    BUFFER_BNB_CLOSING[50];
+//double    ExtSignalBuffer_2[50];
+double    prev_2,current_2;
+
+double    ExtBuffer1_3[50];
+double    ExtBuffer2_3[50];
+double    ExtMacdBuffer_3[50];
+//double    ExtSignalBuffer_3[50];
+double    prev_3,current_3;
+
+double    ExtBuffer1_4[50];
+double    ExtBuffer2_4[50];
+double    ExtMacdBuffer_4[50];
+//double    ExtSignalBuffer_4[50];
+double    prev_4,current_4;
+
+datetime filter_time_1 = D'21:00:00';
+datetime filter_time_2 = D'03:00:00';
+bool     TRADE_TIME_ALOWED = false;
+string Trade_time_filter = " ";
+
+int OnInit()//init start
+{  
+   //
+   //filter_time_1 = D'21:30:01';
+   //filter_time_2 = D'03:00:01';
+   //
+   /*SUPDEM();
+   if(Multi_TF_BNB_Algo){
+   Sinyal_BNB();*/
+   //Bikin_Kotak_Label();
+   //SymbolCount =0;
+   //if(false) { Bikin_Kotak_Label(); }
+   //}
+   Print("Broker Stop Level = "+DoubleToString(MarketInfo(Symbol(),MODE_STOPLEVEL),Digits)+"");
+   Print("Broker Digit = "+IntegerToString(Digits)+"");
+   //start();
+   //SUPDEM();
+   return(INIT_SUCCEEDED);
+}//init end//
+
+void OnDeinit(const int reason)
+  {
+   
+    ObjectDelete("Sell_Entry_Zone_Bawah");
+    ObjectDelete("Sell_Entry_Label_Bawah");
+    ObjectDelete("Sell_Entry_Zone_Atas");
+    ObjectDelete("Sell_Entry_Label_Atas");
+    ObjectDelete("Sell_Entry_Zone_Bawah_2");
+    ObjectDelete("Sell_Entry_Label_Bawah_2");
+    ObjectDelete("Sell_Entry_Zone_Atas_2");
+    ObjectDelete("Sell_Entry_Label_Atas_2");
+    
+    ObjectDelete("Buy_Entry_Zone_Atas");
+    ObjectDelete("Buy_Entry_Label_Atas");
+    ObjectDelete("Buy_Entry_Zone_Bawah");
+    ObjectDelete("Buy_Entry_Label_Bawah");
+    ObjectDelete("Buy_Entry_Zone_Atas_2");
+    ObjectDelete("Buy_Entry_Label_Atas_2");
+    ObjectDelete("Buy_Entry_Zone_Bawah_2");
+    ObjectDelete("Buy_Entry_Label_Bawah_2");
+  //
+//---
+  if(Multi_TF_BNB_Algo){
+       ObjectDelete("TFF_1i");
+       ObjectDelete("TFF_2i");
+       ObjectDelete("TFF_3i");
+       ObjectDelete("TFF_4i");
+       ObjectDelete("TFF_5i");
+       ObjectDelete("TFF_6i");
+       ObjectDelete("TFF_7i");
+       ObjectDelete("TFF_8i");
+       ObjectDelete("TFF_9i");
+   
+       ObjectDelete("TFF_1");
+       ObjectDelete("TFF_2");
+       ObjectDelete("TFF_3");
+       ObjectDelete("TFF_4");
+       ObjectDelete("TFF_5");
+       ObjectDelete("TFF_6");
+       ObjectDelete("TFF_7");
+       ObjectDelete("TFF_8");
+       ObjectDelete("TFF_9");
+       
+       ObjectDelete(""+button_close_basket_All+"");//,"CLOSE ALL",90 ,18,X_axis+560 ,Y_axis-25,clrDarkGray,clrRed);
+       ObjectDelete(""+button_buy_basket_1+"");//,TradePair[0],68 ,18,Z_axis+140,Y_axis,clrRoyalBlue,clrWhite);           
+       ObjectDelete(button_sell_basket_1);//,TradePair[0],68 ,18,Z_axis+210 ,Y_axis,clrGoldenrod,clrWhite);
+       ObjectDelete(button_close_basket_1);//,"CLOSE",68 ,18,Z_axis+280 ,Y_axis,clrRed,clrWhite);
+       ObjectDelete(button_buy_basket_2);//,TradePair[1],68 ,18,Z_axis+150,Y_axis+16,clrRoyalBlue,clrWhite);           
+       ObjectDelete(button_sell_basket_2);//,TradePair[1],68 ,18,Z_axis+220 ,Y_axis+16,clrGoldenrod,clrWhite);
+       ObjectDelete(button_close_basket_2);//,"CLOSE",68 ,18,Z_axis+290 ,Y_axis+16,clrRed,clrWhite);
+       ObjectDelete(button_buy_basket_3);//,TradePair[2],68 ,18,Z_axis+150,Y_axis+32,clrRoyalBlue,clrWhite);           
+       ObjectDelete(button_sell_basket_3);//,TradePair[2],68 ,18,Z_axis+220 ,Y_axis+32,clrGoldenrod,clrWhite);
+       ObjectDelete(button_close_basket_3);//,"CLOSE",68 ,18,Z_axis+290 ,Y_axis+32,clrRed,clrWhite);
+       ObjectDelete(button_buy_basket_4);//,TradePair[3],68 ,18,Z_axis+150,Y_axis+48,clrRoyalBlue,clrWhite);           
+       ObjectDelete(button_sell_basket_4);//,TradePair[3],68 ,18,Z_axis+220 ,Y_axis+48,clrGoldenrod,clrWhite);
+       ObjectDelete(button_close_basket_4);//,"CLOSE",68 ,18,Z_axis+290 ,Y_axis+48,clrRed,clrWhite);
+       ObjectDelete(button_buy_basket_5);//,TradePair[4],68 ,18,Z_axis+150,Y_axis+64,clrRoyalBlue,clrWhite);           
+       ObjectDelete(button_sell_basket_5);//,TradePair[4],68 ,18,Z_axis+220 ,Y_axis+64,clrGoldenrod,clrWhite);
+       ObjectDelete(button_close_basket_5);//,"CLOSE",68 ,18,Z_axis+290 ,Y_axis+64,clrRed,clrWhite);
+       ObjectDelete(button_buy_basket_6);//,TradePair[5],68 ,18,Z_axis+150,Y_axis+80,clrRoyalBlue,clrWhite);           
+       ObjectDelete(button_sell_basket_6);//,TradePair[5],68 ,18,Z_axis+220 ,Y_axis+80,clrGoldenrod,clrWhite);
+       ObjectDelete(button_close_basket_6);//,"CLOSE",68 ,18,Z_axis+290 ,Y_axis+80,clrRed,clrWhite);
+       ObjectDelete(button_buy_basket_7);//,TradePair[6],68 ,18,Z_axis+150,Y_axis+96,clrRoyalBlue,clrWhite);           
+       ObjectDelete(button_sell_basket_7);//,TradePair[6],68 ,18,Z_axis+220 ,Y_axis+96,clrGoldenrod,clrWhite);
+       ObjectDelete(button_close_basket_7);//,"CLOSE",68 ,18,Z_axis+290 ,Y_axis+96,clrRed,clrWhite);
+       ObjectDelete(button_buy_basket_8);//,TradePair[6],68 ,18,Z_axis+150,Y_axis+96,clrRoyalBlue,clrWhite);           
+       ObjectDelete(button_sell_basket_8);//,TradePair[6],68 ,18,Z_axis+220 ,Y_axis+96,clrGoldenrod,clrWhite);
+       ObjectDelete(button_close_basket_8);//,"CLOSE",68 ,18,Z_axis+290 ,Y_axis+96,clrRed,clrWhite);
+       ObjectDelete(button_buy_basket_9);//,TradePair[6],68 ,18,Z_axis+150,Y_axis+96,clrRoyalBlue,clrWhite);           
+       ObjectDelete(button_sell_basket_9);//,TradePair[6],68 ,18,Z_axis+220 ,Y_axis+96,clrGoldenrod,clrWhite);
+       ObjectDelete(button_close_basket_9);//,"CLOSE",68 ,18,Z_axis+290 ,Y_axis+96,clrRed,clrWhite); 
+       
+       ObjectDelete("Bar"); }
+       
+       ////////dari indi
+       firstTime=true;
+   
+       
+  }
+  
+//
+//Time filter
+bool FilterTime()//true = trade allowed
+{
+   bool Filter__Time = false;
+   {
+   if ( 
+         (
+          (Start_Hour < End_Hour) && 
+          (TimeHour(TimeCurrent()) >= Start_Hour) && 
+          (TimeHour(TimeCurrent()) < End_Hour)
+         )
+         ||
+         (
+          (Start_Hour > End_Hour) && 
+          (
+           (TimeHour(TimeCurrent()) < End_Hour) || 
+           (TimeHour(TimeCurrent()) >= Start_Hour)
+          )
+         )
+      )
+    {
+       Filter__Time = true;
+    }
+    }
+   if (Filter__Time == false)
+    {
+           Trade_time_filter = "TRADE NOT ALOWED";
+           TRADE_TIME_ALOWED = false;
+    }else {
+           Trade_time_filter = "TRADE ALOWED"; 
+           TRADE_TIME_ALOWED = true;
+          }
+    
+    return(Filter__Time);
+}
+//Time filter
+//
+
+int start()
+{ 
+   
+   GetAllOpenedTrades(5);
+   GetAllClosedTrades(5); 
+   SUPDEM();
+   SL_TP_MONEY();
+   
+   if(Pake_Equity_Target == true)  { closingan(); } 
+   if(Pake_Equity_Target == false) { Open_Position = true; } 
+   
+   if(Multi_TF_BNB_Algo){
+   Sinyal_BNB();
+       //
+       if (Munculkan_Tombol_Trade) {
+       Create_Button(button_close_basket_All,"CLOSE ALL",238 ,20,X_axis+240 ,Y_axis-27,clrDarkGray,clrRed);
+       Create_Button(button_buy_basket_1,"BUY",68 ,18,X_axis+240,Y_axis,clrRoyalBlue,clrWhite);           
+       Create_Button(button_sell_basket_1,"SELL",68 ,18,X_axis+325 ,Y_axis,clrGoldenrod,clrWhite);
+       Create_Button(button_close_basket_1,"CLOSE",68 ,18,X_axis+410 ,Y_axis,clrRed,clrWhite);
+
+       }}
+       //
+ //
+ keuntungan = Proffitt_Buy_1() + Proffitt_Sell_1();
+ totalorder = Total__Buy_ke_1() + Total__Sell_ke_1(); 
+ 
+ string AAAAAA, BBBBB; 
+      
+ if(((Profit_Today())+(keuntungan)) < Target_Harian)
+  {
+  Open_Position   = true;
+  Target_Tercapai = false;
+  AAAAAA          = "NOT YET REACH";
+  BBBBB           = "OP ENABLE";
+  }  
+                    
+ if(((Profit_Today())+(keuntungan)) >= (Target_Harian+0.1))
+  {
+  Open_Position   = false;
+  Target_Tercapai = true;
+  AAAAAA          = "D O N E";
+  BBBBB           = "OP DISABLE";
+  if(((Profit_Today())+(keuntungan)) > (Target_Harian+0.1)){
+  close_basket(Symbol());}
+  }
+  
+///////////////
+string Sinyal_5  = "Waiting...";
+string Sinyal_6  = "Waiting...";
+string Sinyal_7  = "Waiting...";
+
+string Profit_pair  = DoubleToString(keuntungan,2);
+string Profit_pair2 = DoubleToString(((Profit_Today())+(keuntungan)),2);
+
+///////////////
+Open_Posisi();
+
+return(0);//start return
+}//start end
+//
+
+
+
+void Sinyal_BNB()//op closing
+{
+       HideTestIndicators(true);
+       ///////////
+       int limite;
+
+       limite=0;
+       if(Bars>0)// && Bars<50)
+       {
+       limite++;
+       }
+       
+       for(int it=0; it<limite; it++)
+	    {
+		   datetime timee=Time[it];
+		   
+		   int position1=iBarShift(NULL,TIMEFRAME_BNB_ENTRY,timee,false);
+		   int position2=iBarShift(NULL,TIMEFRAME_BNB_CLOSING,timee,false);
+         
+		   BUFFER_BNB_ENTRY[it]   = iCustom(NULL,TIMEFRAME_BNB_ENTRY,"[MP161_BULLBEARS]",PERIODE_BNB_ENTRY,0,position1);
+		   
+		   BUFFER_BNB_CLOSING[it] = iCustom(NULL,TIMEFRAME_BNB_CLOSING,"[MP161_BULLBEARS]",PERIODE_BNB_CLOSING,0,position2);
+	    
+	    }
+
+       bool up_1=true;
+       bool up_2=true;
+       bool up_3=true;
+       bool up_4=true;
+       
+       for(int it=0; it<limite; it++)
+       {
+       
+       current_1 = BUFFER_BNB_ENTRY[it];
+       prev_1    = BUFFER_BNB_ENTRY[it+1];
+       current_2 = BUFFER_BNB_CLOSING[it];
+       prev_2    = BUFFER_BNB_CLOSING[it+1];
+       
+       current_3 = ExtMacdBuffer_3[it];
+       prev_3    = ExtMacdBuffer_3[it+1];
+       current_4 = ExtMacdBuffer_4[it];
+       prev_4    = ExtMacdBuffer_4[it+1];
+       
+       
+       if (((current_1<0)&&(prev_1>0))||(current_1<0))  { up_1= false;}
+       if (((current_1>0)&&(prev_1<0))||(current_1>0))  { up_1= true;}
+       if(!up_1)
+        {
+         ExtBuffer2_1[it]=current_1;
+         ExtBuffer1_1[it]=0.0;
+         BnB_01          =ExtBuffer2_1[0];
+        }
+       else
+        {
+         ExtBuffer1_1[it]=current_1;
+         ExtBuffer2_1[it]=0.0;
+         BnB_01          =ExtBuffer2_1[0];
+        }
+        
+       if (((current_2<0)&&(prev_2>0))||(current_2<0))  { up_2= false;}
+       if (((current_2>0)&&(prev_2<0))||(current_2>0))  { up_2= true;}
+       if(!up_2)
+        {
+         ExtBuffer2_2[it]=current_2;
+         ExtBuffer1_2[it]=0.0;
+         BnB_02          =ExtBuffer2_2[0];
+        }
+       else
+        {
+         ExtBuffer1_2[it]=current_2;
+         ExtBuffer2_2[it]=0.0;
+         BnB_02          =ExtBuffer2_2[0];
+        }
+              
+       }
+       
+       HideTestIndicators(false);
+return;
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+
+string PeriodToStr(int timeframe)
+  {
+   switch(timeframe)
+     {
+      case PERIOD_CURRENT:return("Current TF");
+      case PERIOD_M1:return("M1");
+      case PERIOD_M5:return("M5");
+      case PERIOD_M15:return("M15");
+      case PERIOD_M30:return("M30");
+      case PERIOD_H1:return("H1");
+      case PERIOD_H4:return("H4");
+      case PERIOD_D1:return("D1");
+      case PERIOD_W1:return("W1");
+      case PERIOD_MN1:return("MN1");
+      default:return("Current TF");
+	}
+  }
+
+void Create_Button(string but_name,string label,int xsize,int ysize,int xdist,int ydist,int bcolor,int fcolor)
+{
+   if(ObjectFind(0,but_name)<0)
+   {
+      if(!ObjectCreate(0,but_name,OBJ_BUTTON,0,0,0))
+        {
+         Print(__FUNCTION__,
+               ": failed to create the button! Error code = ",GetLastError());
+         return;
+        }
+      ObjectSetString(0,but_name,OBJPROP_TEXT,label);
+      ObjectSetInteger(0,but_name,OBJPROP_XSIZE,xsize);
+      ObjectSetInteger(0,but_name,OBJPROP_YSIZE,ysize);
+      ObjectSetInteger(0,but_name,OBJPROP_CORNER,CORNER_LEFT_UPPER);     
+      ObjectSetInteger(0,but_name,OBJPROP_XDISTANCE,xdist);      
+      ObjectSetInteger(0,but_name,OBJPROP_YDISTANCE,ydist);         
+      ObjectSetInteger(0,but_name,OBJPROP_BGCOLOR,bcolor);
+      ObjectSetInteger(0,but_name,OBJPROP_COLOR,fcolor);
+      ObjectSetInteger(0,but_name,OBJPROP_FONTSIZE,9);
+      ObjectSetInteger(0,but_name,OBJPROP_HIDDEN,true);
+      //ObjectSetInteger(0,but_name,OBJPROP_BORDER_COLOR,ChartGetInteger(0,CHART_COLOR_FOREGROUND));
+      ObjectSetInteger(0,but_name,OBJPROP_BORDER_TYPE,BORDER_RAISED);
+      
+      ChartRedraw();      
+   }
+
+}   
+  
+//+------------------------------------------------------------------+
+
+void SetText(string name,string text,int x,int y,color colour,int fontsize=12)
+  {
+   if(ObjectCreate(0,name,OBJ_LABEL,0,0,0))
+     {
+      ObjectSetInteger(0,name,OBJPROP_XDISTANCE,x);
+      ObjectSetInteger(0,name,OBJPROP_YDISTANCE,y);
+      ObjectSetInteger(0,name,OBJPROP_COLOR,colour);
+      ObjectSetInteger(0,name,OBJPROP_FONTSIZE,Font_Size);//fontsize);
+      ObjectSetInteger(0,name,OBJPROP_CORNER,CORNER_LEFT_UPPER);
+     }
+   ObjectSetString(0,name,OBJPROP_TEXT,text);
+  }
+//+------------------------------------------------------------------+
+
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+void SetPanel(string name,int sub_window,int x,int y,int width,int height,color bg_color,color border_clr,int border_width)
+  {
+   if(ObjectCreate(0,name,OBJ_RECTANGLE_LABEL,sub_window,0,0))
+     {
+      ObjectSetInteger(0,name,OBJPROP_XDISTANCE,x);
+      ObjectSetInteger(0,name,OBJPROP_YDISTANCE,y);
+      ObjectSetInteger(0,name,OBJPROP_XSIZE,width);
+      ObjectSetInteger(0,name,OBJPROP_YSIZE,height);
+      ObjectSetInteger(0,name,OBJPROP_COLOR,border_clr);
+      ObjectSetInteger(0,name,OBJPROP_BORDER_TYPE,BORDER_FLAT);
+      ObjectSetInteger(0,name,OBJPROP_WIDTH,border_width);
+      ObjectSetInteger(0,name,OBJPROP_CORNER,CORNER_LEFT_UPPER);
+      ObjectSetInteger(0,name,OBJPROP_STYLE,STYLE_SOLID);
+      ObjectSetInteger(0,name,OBJPROP_BACK,true);
+      ObjectSetInteger(0,name,OBJPROP_SELECTABLE,0);
+      ObjectSetInteger(0,name,OBJPROP_SELECTED,0);
+      ObjectSetInteger(0,name,OBJPROP_HIDDEN,true);
+      ObjectSetInteger(0,name,OBJPROP_ZORDER,0);
+     }
+   ObjectSetInteger(0,name,OBJPROP_BGCOLOR,bg_color);
+  }
+//+------------------------------------------------------------------+
+
+
+void OnChartEvent(const int id,  const long &lparam, const double &dparam,  const string &sparam)
+  {
+   if(id==CHARTEVENT_OBJECT_CLICK)
+  tickeT = OrderTicket();
+  
+      {
+      if(sparam==button_close_basket_All)
+        {
+               ObjectSetString(0,button_close_basket_All,OBJPROP_TEXT,"Closing...");               
+               close_basket(Symbol());
+               ObjectSetInteger(0,button_close_basket_All,OBJPROP_STATE,0);
+               ObjectSetString(0,button_close_basket_All,OBJPROP_TEXT,"Close Basket"); 
+               ObjectDelete(button_close_basket_All);        
+        }
+//-----------------------------------------------------------------------------------------------------------------     
+     if(sparam==button_buy_basket_1)
+        {
+               ObjectSetString(0,button_buy_basket_1,OBJPROP_TEXT,"Buying...");
+               tickeT=OrderSend(Symbol(),OP_BUY,LOT_SIZE_,MarketInfo(Symbol(),MODE_ASK),100,0,0,"Buy_Manual_01",Magic_Number+11,0,Blue);
+               ObjectSetInteger(0,button_buy_basket_1,OBJPROP_STATE,0);
+               ObjectSetString(0,button_buy_basket_1,OBJPROP_TEXT,"Buy Basket"); 
+               ObjectDelete(button_buy_basket_1);        
+        }
+     if(sparam==button_sell_basket_1)
+        {
+               ObjectSetString(0,button_sell_basket_1,OBJPROP_TEXT,"Selling...");
+               tickeT=OrderSend(Symbol(),OP_SELL,LOT_SIZE_,MarketInfo(Symbol(),MODE_BID),100,0,0,"Sell_Manual_01",Magic_Number+11,0,Red);
+               ObjectSetInteger(0,button_sell_basket_1,OBJPROP_STATE,0);
+               ObjectSetString(0,button_sell_basket_1,OBJPROP_TEXT,"Sell Basket");
+               ObjectDelete(button_sell_basket_1);         
+        }
+     if(sparam==button_close_basket_1)
+        {
+               ObjectSetString(0,button_close_basket_1,OBJPROP_TEXT,"Closing...");               
+               closeOpenOrders(Symbol(), OP_SELL,Magic_Number+11);
+               closeOpenOrders(Symbol(), OP_BUY,Magic_Number+11);
+               ObjectSetInteger(0,button_close_basket_1,OBJPROP_STATE,0);
+               ObjectSetString(0,button_close_basket_1,OBJPROP_TEXT,"Close Basket");
+               ObjectDelete(button_close_basket_1);         
+        }
+         
+//----------------------------------------------------------------------------------------------------------------------
+
+}
+    //--- re-draw property values
+   ChartRedraw(); 
+     }
+
+//+------------------------------------------------------------------+
+//| closeOpenOrders                                                  |
+//+------------------------------------------------------------------+
+void closeOpenOrders(string currency, int orderType, int ordermagicc)
+{
+   
+   double close;
+   orders = OrdersTotal();
+   for(int i=0;i<orders;i++) {
+      if(OrderSelect(i, SELECT_BY_POS)==true) {
+         if(OrderType() == orderType && OrderSymbol() == currency && orderType == OP_SELL && OrderMagicNumber() == ordermagicc) {
+            double ask = MarketInfo(currency,MODE_ASK);
+           close= OrderClose(OrderTicket(),OrderLots(),ask,3,Red);
+         }
+         if(OrderType() == orderType && OrderSymbol() == currency && orderType == OP_BUY && OrderMagicNumber() == ordermagicc) { 
+            double bid = MarketInfo(currency,MODE_BID);
+           close= OrderClose(OrderTicket(),OrderLots(),bid,3,Green);
+         }
+      }
+   }
+}
+void close_basket(string simbol)
+{ 
+  
+if (OrdersTotal()==0) return;
+
+for (int i=OrdersTotal()-1; i>=0; i--)
+      {//pozicio kivalasztasa
+       if (OrderSelect(i, SELECT_BY_POS, MODE_TRADES)==true)//ha kivalasztas ok
+            {
+            //Print ("order ticket: ", OrderTicket(), "order magic: ", OrderMagicNumber());
+            if (OrderType()==0 && OrderSymbol() == simbol)
+               {//ha long
+               tickeT=OrderClose(OrderTicket(),OrderLots(), MarketInfo(OrderSymbol(),MODE_BID), 3,Yellow);
+               Sleep(7000);
+               if (tickeT==-1) Print ("Error: ",  GetLastError());
+               }
+            if (OrderType()==1 && OrderSymbol() == simbol)
+               {//ha short
+               tickeT=OrderClose(OrderTicket(),OrderLots(), MarketInfo(OrderSymbol(),MODE_ASK), 3,Yellow);
+               Sleep(7000);
+               if (tickeT==-1) Print ("Error: ",  GetLastError());
+               }
+            
+            if (OrderType()==OP_BUYSTOP && OrderSymbol() == simbol)
+               {
+               int buystop=OrderDelete(OrderTicket(),clrBlue);
+               if (buystop==-1) Print ("Error Delete BS : ",  GetLastError());
+               }
+            if (OrderType()==OP_SELLSTOP && OrderSymbol() == simbol)
+               {
+               int sellstop=OrderDelete(OrderTicket(),clrRed);
+               if (sellstop==-1) Print ("Error Delete SS : ",  GetLastError());
+               }
+            }
+      }
+  
+//----
+   return;
+    
+}
+
+ string Reverse_Signaling = "# REVERSE THE SIGNAL #";
+ bool   Signal_Reversed   = false;
+ //
+void Open_Posisi()
+{
+       //if(Candle_Profit() != 0.0)
+
+       
+       if(Candle_Profit() == 0.0){
+       if((BnB_01 == 0.0))            
+          {BNB_ENTRI_SINYAL_UP  = 22.0; } else {BNB_ENTRI_SINYAL_UP  = 0.0; } 
+          
+       if((BnB_01 != 0.0))           
+          {BNB_ENTRI_SINYAL_DOWN = 11.0; } else {BNB_ENTRI_SINYAL_DOWN = 0.0; }
+       
+       if((BnB_02 == 0.0))            
+          {BNB_EXIT_SINYAL_UP  = 22.0; } else {BNB_EXIT_SINYAL_UP  = 0.0; } 
+          
+       if((BnB_02 != 0.0))           
+          {BNB_EXIT_SINYAL_DOWN = 11.0; } else {BNB_EXIT_SINYAL_DOWN = 0.0; }
+       
+          
+               }
+       
+double BUY__TP  = 0;
+double BUY__SL  = 0;
+double SELL__TP = 0;
+double SELL__SL = 0;
+
+
+
+
+//
+if(AUTO_SL_SND == true) {
+if(true)
+  { 
+    BUY__SL  = Buy_SL_snd;
+    SELL__SL = Sell_SL_snd;
+  }  
+  }
+//
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+double trend_bband_buy  = 0;
+double trend_bband_sell = 0;
+
+
+                                                       
+HideTestIndicators(true);
+ if ((Open_Position == true && Target_Tercapai == false) //&&
+     //(Buy_Entry_Zone_Atas_Time1 > Last_Closed_Time() || Sell_Entry_Zone_Bawah_Time1 > Last_Closed_Time())
+    ){
+//eksekusi Ke 1
+       if((ON_KAN_AUTOTRADE_Ke_1 == true) && (FilterTime() == true)){
+       
+       if(totalorder == 0){//Belum ada op
+       if((BNB_ENTRI_SINYAL_UP == 22.0 && Sinyal_snd_OP_1 == "UP") ||
+          (BNB_ENTRI_SINYAL_UP == 22.0 && Sinyal_snd_OP_1_2x == "UP"))               
+       { 
+         int OP__BUY_1 = 0;
+         if((Total__Buy_ke_1() < 1) && (Candle_Profit() == 0.0)){
+         if((Buy_Auto_Activated == true)){// && (Buy_Entry_Zone_Atas_Time1 > Last_Closed_Time())) {// && (Ask < Buy_Not_Allowed) && (Ask < Middle_zone)){   
+         OP__BUY_1 = OrderSend(Symbol(),OP_BUY,LOT_SIZE_AUTO_TRADE,MarketInfo(Symbol(),MODE_ASK),10,BUY__SL,BUY__TP,"BUY AUTO 1",Magic_Number_Buy_OP_1+10,0,clrBlue);}}
+         if(OP__BUY_1 == -1) { Print("OrderSend(BUY AUTO KE 1) error - ",GetLastError()); }
+       }
+       
+       if((BNB_ENTRI_SINYAL_DOWN == 11.0 && Sinyal_snd_OP_1 == "DOWN") ||
+          (BNB_ENTRI_SINYAL_DOWN == 11.0 && Sinyal_snd_OP_1_2x == "DOWN"))              
+       { 
+         int OP__SELL_1 = 0;
+         if((Total__Sell_ke_1() < 1) && (Candle_Profit() == 0.0)){
+         if((Sell_Auto_Activated == true)){// && (Sell_Entry_Zone_Bawah_Time1 > Last_Closed_Time())) {// && (Bid > Sell_Not_Allowed) && (Bid > Middle_zone)){   
+         OP__SELL_1 = OrderSend(Symbol(),OP_SELL,LOT_SIZE_AUTO_TRADE,MarketInfo(Symbol(),MODE_BID),10,SELL__SL,SELL__TP,"SELL AUTO 1",Magic_Number_Sell_OP_1+30,0,clrRed);}}
+         if(OP__SELL_1 == -1) { Print("OrderSend(SELL AUTO KE 1) error - ",GetLastError()); }
+       }}
+       
+       }
+//eksekusi ke 1
+ }
+HideTestIndicators(false);
+
+//
+if(__AUTO_CLOSING__ == true && (keuntungan > (3*MarketInfo(Symbol(), MODE_SPREAD)*LOT_SIZE_AUTO_TRADE))){
+if(Signal_Reversed == false){
+
+if(Sinyal_bnb_EXIT_OP == "Up Trend") {
+if(Total__Sell_ke_1() > 0){closeOpenOrders(Symbol(), OP_SELL,Magic_Number_Sell_OP_1+30);}
+}
+if(Sinyal_bnb_EXIT_OP == "Down Trend") {
+if(Total__Buy_ke_1() > 0){closeOpenOrders(Symbol(), OP_BUY,Magic_Number_Buy_OP_1+10);}
+}}
+}
+//
+if(SND_AUTO_CLOSING_ == true){
+if(Sinyal_snd_OP_1 == "MENUNGGU..."){
+
+if(Sinyal_bnb_EXIT_OP == "Up Trend" && Buy_Entry_Zone_Atas_Time1 > Sell_Entry_Zone_Bawah_Time1) {
+if(Total__Sell_ke_1() > 0){closeOpenOrders(Symbol(), OP_SELL,Magic_Number_Sell_OP_1+30);}
+}
+if(Sinyal_bnb_EXIT_OP == "Down Trend" && Buy_Entry_Zone_Atas_Time1 < Sell_Entry_Zone_Bawah_Time1) {
+if(Total__Buy_ke_1() > 0){closeOpenOrders(Symbol(), OP_BUY,Magic_Number_Buy_OP_1+10);}
+}}
+}
+//
+ 
+ return;}  
+
+//
+int Total__Buy_ke_1()
+{  
+   int TotalFirstBuy = 0;
+   for (int itung = OrdersTotal() - 1; itung >= 0; itung--) 
+   {  if (true){
+      if (OrderSelect(itung, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol() || OrderMagicNumber() != Magic_Number_Buy_OP_1+10) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_1+10)
+      if (OrderType() == OP_BUYSTOP || OrderType() == OP_BUY) TotalFirstBuy++;}
+   }
+   return (TotalFirstBuy);
+}
+
+int Total__Sell_ke_1()
+{  
+   int TotalFirstSell = 0;
+   for (int itung = OrdersTotal() - 1; itung >= 0; itung--) 
+   {  if (true){
+      if (OrderSelect(itung, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol() || OrderMagicNumber() != Magic_Number_Sell_OP_1+30) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_1+30)
+      if (OrderType() == OP_SELLSTOP || OrderType() == OP_SELL) TotalFirstSell++;}
+   }
+   return (TotalFirstSell);
+}
+//
+
+double Price_236, Price_382, Price_500, Price_618, STATUS, BNB_FIBO;
+double Price_0    = 0;
+double STATUS_0   = 0;
+double BNB_FIBO_0 = 0;
+double Price_01   = 0;
+double Price_02   = 0;
+double Price_03   = 0;
+double Price_04   = 0;
+double Price_05   = 0;
+double Price_06   = 0;
+double Price_07   = 0;
+double Price_08   = 0;
+double Price_09   = 0;
+double Price_10   = 0;
+double Distance   = 0;
+
+double TP_01_BS = 0;
+double TP_02_BS = 0;
+double TP_03_BS = 0;
+double TP_04_BS = 0;
+double TP_05_BS = 0;
+double TP_06_BS = 0;
+double TP_07_BS = 0;
+double TP_08_BS = 0;
+double TP_09_BS = 0;
+double TP_10_BS = 0;
+
+double TP_01_SS = 0;
+double TP_02_SS = 0;
+double TP_03_SS = 0;
+double TP_04_SS = 0;
+double TP_05_SS = 0;
+double TP_06_SS = 0;
+double TP_07_SS = 0;
+double TP_08_SS = 0;
+double TP_09_SS = 0;
+double TP_10_SS = 0;
+
+double SL_01_BS = 0;
+double SL_02_BS = 0;
+double SL_03_BS = 0;
+double SL_04_BS = 0;
+double SL_05_BS = 0;
+double SL_06_BS = 0;
+double SL_07_BS = 0;
+double SL_08_BS = 0;
+double SL_09_BS = 0;
+double SL_10_BS = 0;
+
+double SL_01_SS = 0;
+double SL_02_SS = 0;
+double SL_03_SS = 0;
+double SL_04_SS = 0;
+double SL_05_SS = 0;
+double SL_06_SS = 0;
+double SL_07_SS = 0;
+double SL_08_SS = 0;
+double SL_09_SS = 0;
+double SL_10_SS = 0;
+
+double TAKEPROFIT = 0;
+double STOPLOSSS  = 0;
+
+
+
+
+
+ int             UniqueKotak             = 0;                           // Kotak Code  
+
+ double        Gap = 1; // Gap between the lines of bars
+ int      Period_1 = 0;
+ int      Period_2 = 0;
+ int      Period_3 = 0;//
+ int      Period_4 = 0;
+ int      Period_5 = 0;//
+ int      Period_6 = 0;
+ bool  AutoDisplay = false;
+ bool    firstTime = true;
+
+///////////////////////
+int Warna_Test = clrNONE;
+
+
+
+  string label1     = "";
+  string nama_indi  = "";
+
+string PeriodToStr1(int timeframe1)
+  {
+   switch(timeframe1)
+     {
+      //case PERIOD_CURRENT:return("Current TF");
+      case PERIOD_M1:return("M1");
+      case PERIOD_M5:return("M5");
+      case PERIOD_M15:return("M15");
+      case PERIOD_M30:return("M30");
+      case PERIOD_H1:return("H1");
+      case PERIOD_H4:return("H4");
+      case PERIOD_D1:return("D1");
+      case PERIOD_W1:return("W1");
+      case PERIOD_MN1:return("MN1");
+      default:return("Current TF");
+	}
+  }
+
+string PeriodToStr2(int timeframe2)
+  {
+   switch(timeframe2)
+     {
+      //case PERIOD_CURRENT:return("Current TF");
+      case PERIOD_M1:return("M1");
+      case PERIOD_M5:return("M5");
+      case PERIOD_M15:return("M15");
+      case PERIOD_M30:return("M30");
+      case PERIOD_H1:return("H1");
+      case PERIOD_H4:return("H4");
+      case PERIOD_D1:return("D1");
+      case PERIOD_W1:return("W1");
+      case PERIOD_MN1:return("MN1");
+      default:return("Current TF");
+	}
+  }
+
+string PeriodToStr3(int timeframe3)
+  {
+   switch(timeframe3)
+     {
+      case PERIOD_CURRENT:return("Current TF");
+      case PERIOD_M1:return("M1");
+      case PERIOD_M5:return("M5");
+      case PERIOD_M15:return("M15");
+      case PERIOD_M30:return("M30");
+      case PERIOD_H1:return("H1");
+      case PERIOD_H4:return("H4");
+      case PERIOD_D1:return("D1");
+      case PERIOD_W1:return("W1");
+      case PERIOD_MN1:return("MN1");
+      default:return("Current TF");
+	}
+  }
+  
+
+string PeriodToStr4(int timeframe4)
+  {
+   switch(timeframe4)
+     {
+      case PERIOD_CURRENT:return("Current TF");
+      case PERIOD_M1:return("M1");
+      case PERIOD_M5:return("M5");
+      case PERIOD_M15:return("M15");
+      case PERIOD_M30:return("M30");
+      case PERIOD_H1:return("H1");
+      case PERIOD_H4:return("H4");
+      case PERIOD_D1:return("D1");
+      case PERIOD_W1:return("W1");
+      case PERIOD_MN1:return("MN1");
+      default:return("Current TF");
+	}
+  }
+ 
+string tf2txt(int tf)
+  {
+   if (tf==PERIOD_M1)    return("M1");
+   if (tf==PERIOD_M5)    return("M5");
+   if (tf==PERIOD_M15)   return("M15");
+   if (tf==PERIOD_M30)   return("M30");
+   if (tf==PERIOD_H1)    return("H1");
+   if (tf==PERIOD_H4)    return("H4");
+   if (tf==PERIOD_D1)    return("D1");
+   if (tf==PERIOD_W1)    return("W1");
+   if (tf==PERIOD_MN1)   return("MN1");
+   return("??");
+  }
+
+
+
+
+
+bool Open_Position = false;
+void closingan()
+{//////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   double Equity1 = (AccountBalance()-AccountEquity());
+   double Equity2 = Equity_Target/7;
+   double Equity3 = Equity_Target/7;
+   double  targetequity = 0;
+   double total_vline = 0;
+   
+   if (ObjectsTotal(OBJ_VLINE) == 0) { total_vline = 1; }
+   if (ObjectsTotal(OBJ_VLINE) == 1) { total_vline = 2; }
+   if (ObjectsTotal(OBJ_VLINE) == 2) { total_vline = 3; }
+   if (ObjectsTotal(OBJ_VLINE) == 3) { total_vline = 4; }
+   if (ObjectsTotal(OBJ_VLINE) == 4) { total_vline = 5; }
+   if (ObjectsTotal(OBJ_VLINE) == 5) { total_vline = 6; }
+   if (ObjectsTotal(OBJ_VLINE) == 6) { total_vline = 7; }
+   if (ObjectsTotal(OBJ_VLINE) == 7) { total_vline = 8; }
+   if (ObjectsTotal(OBJ_VLINE) == 8) { total_vline = 9; }
+   if (ObjectsTotal(OBJ_VLINE) == 9) { total_vline = 10; }
+   if (ObjectsTotal(OBJ_VLINE) == 10) { total_vline = 11; }
+   if (ObjectsTotal(OBJ_VLINE) == 11) { total_vline = 12; }
+   if (ObjectsTotal(OBJ_VLINE) == 12) { total_vline = 13; }
+   if (ObjectsTotal(OBJ_VLINE) == 13) { total_vline = 14; }
+   if (ObjectsTotal(OBJ_VLINE) == 14) { total_vline = 15; }
+   if (ObjectsTotal(OBJ_VLINE) == 15) { total_vline = 16; }
+   if (ObjectsTotal(OBJ_VLINE) == 16) { total_vline = 17; }
+   if (ObjectsTotal(OBJ_VLINE) == 17) { total_vline = 18; }
+   if (ObjectsTotal(OBJ_VLINE) == 18) { total_vline = 19; }
+   if (ObjectsTotal(OBJ_VLINE) == 19) { total_vline = 20; }
+   if (ObjectsTotal(OBJ_VLINE) == 20) { total_vline = 21; }
+   if (ObjectsTotal(OBJ_VLINE) == 21) { total_vline = 22; }
+   if (ObjectsTotal(OBJ_VLINE) == 22) { total_vline = 23; }
+   if (ObjectsTotal(OBJ_VLINE) == 23) { total_vline = 24; }
+   if (ObjectsTotal(OBJ_VLINE) == 24) { total_vline = 25; }
+   if (ObjectsTotal(OBJ_VLINE) == 25) { total_vline = 26; }
+   if (ObjectsTotal(OBJ_VLINE) == 26) { total_vline = 27; }
+   if (ObjectsTotal(OBJ_VLINE) == 27) { total_vline = 28; }
+   if (ObjectsTotal(OBJ_VLINE) == 28) { total_vline = 29; }
+   if (ObjectsTotal(OBJ_VLINE) == 29) { total_vline = 30; }
+   if (ObjectsTotal(OBJ_VLINE) == 30) { total_vline = 31; }
+   if (ObjectsTotal(OBJ_VLINE) == 31) { total_vline = 32; }
+   if (ObjectsTotal(OBJ_VLINE) == 32) { total_vline = 33; }
+   if (ObjectsTotal(OBJ_VLINE) == 33) { total_vline = 34; }
+   if (ObjectsTotal(OBJ_VLINE) == 34) { total_vline = 35; }
+   if (ObjectsTotal(OBJ_VLINE) == 35) { total_vline = 36; }
+   if (ObjectsTotal(OBJ_VLINE) == 36) { total_vline = 37; }
+   if (ObjectsTotal(OBJ_VLINE) == 37) { total_vline = 38; }
+   if (ObjectsTotal(OBJ_VLINE) == 38) { total_vline = 39; }
+   if (ObjectsTotal(OBJ_VLINE) == 39) { total_vline = 40; }
+   if (ObjectsTotal(OBJ_VLINE) == 40) { total_vline = 41; }
+   if (ObjectsTotal(OBJ_VLINE) == 41) { total_vline = 42; }
+   if (ObjectsTotal(OBJ_VLINE) == 42) { total_vline = 43; }
+   if (ObjectsTotal(OBJ_VLINE) == 43) { total_vline = 44; }
+   if (ObjectsTotal(OBJ_VLINE) == 44) { total_vline = 45; }
+   if (ObjectsTotal(OBJ_VLINE) == 45) { total_vline = 46; }
+   if (ObjectsTotal(OBJ_VLINE) == 46) { total_vline = 47; }
+   if (ObjectsTotal(OBJ_VLINE) == 47) { total_vline = 48; }
+   if (ObjectsTotal(OBJ_VLINE) == 48) { total_vline = 49; }
+   if (ObjectsTotal(OBJ_VLINE) == 49) { total_vline = 50; }
+   if (ObjectsTotal(OBJ_VLINE) == 50) { total_vline = 51; }
+   if (ObjectsTotal(OBJ_VLINE) == 51) { total_vline = 52; }
+   if (ObjectsTotal(OBJ_VLINE) == 52) { total_vline = 53; }
+   if (ObjectsTotal(OBJ_VLINE) == 53) { total_vline = 54; }
+   if (ObjectsTotal(OBJ_VLINE) == 54) { total_vline = 55; }
+   if (ObjectsTotal(OBJ_VLINE) == 55) { total_vline = 56; }
+   if (ObjectsTotal(OBJ_VLINE) == 56) { total_vline = 57; }
+   if (ObjectsTotal(OBJ_VLINE) == 57) { total_vline = 58; }
+   if (ObjectsTotal(OBJ_VLINE) == 58) { total_vline = 59; }
+   if (ObjectsTotal(OBJ_VLINE) == 59) { total_vline = 60; }
+   if (ObjectsTotal(OBJ_VLINE) == 60) { total_vline = 61; }
+   if (ObjectsTotal(OBJ_VLINE) == 61) { total_vline = 62; }
+   if (ObjectsTotal(OBJ_VLINE) == 62) { total_vline = 63; }
+   if (ObjectsTotal(OBJ_VLINE) == 63) { total_vline = 64; }
+   if (ObjectsTotal(OBJ_VLINE) == 64) { total_vline = 65; }
+   if (ObjectsTotal(OBJ_VLINE) == 65) { total_vline = 66; }
+   if (ObjectsTotal(OBJ_VLINE) == 66) { total_vline = 67; }
+   if (ObjectsTotal(OBJ_VLINE) == 67) { total_vline = 68; }
+   
+   
+   
+  // if ( AccountEquity() > 
+   
+   
+   if (One_Time_Closing == true) {
+   if (AccountEquity() >= (Account_Balance+(Equity_Target*total_vline)))
+      { 
+        Open_Position = false;
+        closeallbuy();
+        closeallsell();
+        close_basket(Symbol());
+      }
+   if (AccountEquity() < (Account_Balance+(Equity_Target*total_vline)))
+      { 
+        if(((Profit_Today())+(keuntungan)) < Target_Harian){
+        Open_Position = true;}
+        if(((Profit_Today())+(keuntungan)) >= Target_Harian){
+        Open_Position = false;}
+      }   
+      }
+
+   if (One_Time_Closing == false) {//
+   if (((AccountEquity() >= (Account_Balance+(Equity_Target*total_vline)))))
+      { 
+        closeallbuy();
+        closeallsell();
+        closeallbuy11();
+        closeallsell11();
+        close_basket(Symbol());
+        //Open_Position = true;
+        if(((Profit_Today())+(keuntungan)) < Target_Harian){
+        Open_Position = true;}
+        if(((Profit_Today())+(keuntungan)) >= Target_Harian){
+        Open_Position = false;}
+        
+        ObjectCreate("Tanda_Closing["+TimeToStr(TimeCurrent(),TIME_DATE|TIME_SECONDS)+"]", OBJ_VLINE,0,Time[0],0);
+      }
+   if (((AccountEquity() < (Account_Balance+(Equity_Target*total_vline)))))
+      { 
+        if(((Profit_Today())+(keuntungan)) < Target_Harian){
+        Open_Position = true;}
+        if(((Profit_Today())+(keuntungan)) >= Target_Harian){
+        Open_Position = false;}
+      } 
+      }
+   //
+   if(Closing_ALL___Now)
+     {
+        Open_Position = false;
+        closeallbuy();
+        closeallsell();
+        close_basket(Symbol());
+     }
+   //
+ if(((Profit_Today())+(keuntungan)) >= Target_Harian)
+  {
+  Target_Tercapai = true;
+  Open_Position   = false;
+  //close_basket(Symbol());
+  }
+ if(((Profit_Today())+(keuntungan)) < Target_Harian)
+  {
+  Target_Tercapai = false;
+  Open_Position   = true;
+  }
+        
+return;        
+}/////
+
+/*
+int ordersPen(){
+ int cnt=0;
+   for(int ib =0;ib<OrdersTotal();ib++){
+     if(OrderSelect(ib,SELECT_BY_POS,MODE_TRADES)){
+       if(OrderSymbol()==Symbol() && OrderType()>OP_SELL){
+         cnt++;
+       }
+     }
+   }
+    return(cnt);
+  }*/
+
+int orders(){
+ int cnt=0;
+   for(int ic =0;ic<OrdersTotal();ic++){
+     if(OrderSelect(ic,SELECT_BY_POS,MODE_TRADES)){
+       if(OrderSymbol()==Symbol() && OrderType()<=OP_SELL){
+         cnt++;
+       }
+     }
+   }
+    return(cnt);
+  }
+
+//total profit buy op1
+double Proffitt_Buy_1() 
+{
+   double ld_ret_0 = 0;
+   for (int g_pos_440 = OrdersTotal() - 1; g_pos_440 >= 0; g_pos_440--) 
+   {
+      if (OrderSelect(g_pos_440, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_1+10)
+      if (OrderType() == OP_BUY) ld_ret_0 += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0);
+}
+//total profit buy op1
+//
+//total profit sell op1
+double Proffitt_Sell_1() 
+{
+   double ld_ret_0s = 0;
+   for (int g_pos_440s = OrdersTotal() - 1; g_pos_440s >= 0; g_pos_440s--) 
+   {
+      if (OrderSelect(g_pos_440s, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_1+30)
+      if (OrderType() == OP_SELL) ld_ret_0s += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0s);
+}
+//total profit sell op1
+ 
+//total profit buy op2
+double Proffitt_Buy_2() 
+{
+   double ld_ret_0 = 0;
+   for (int g_pos_440 = OrdersTotal() - 1; g_pos_440 >= 0; g_pos_440--) 
+   {
+      if (OrderSelect(g_pos_440, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_2+10)
+      if (OrderType() == OP_BUY) ld_ret_0 += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0);
+}
+//total profit buy op2
+//
+//total profit sell op2
+double Proffitt_Sell_2() 
+{
+   double ld_ret_0s = 0;
+   for (int g_pos_440s = OrdersTotal() - 1; g_pos_440s >= 0; g_pos_440s--) 
+   {
+      if (OrderSelect(g_pos_440s, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_2+30)
+      if (OrderType() == OP_SELL) ld_ret_0s += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0s);
+}
+//total profit sell op2
+ 
+//
+double Proffitt_Buy_3() 
+{
+   double ld_ret_0 = 0;
+   for (int g_pos_440 = OrdersTotal() - 1; g_pos_440 >= 0; g_pos_440--) 
+   {
+      if (OrderSelect(g_pos_440, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_3)
+      if (OrderType() == OP_BUY) ld_ret_0 += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0);
+}
+
+double Proffitt_Sell_3() 
+{
+   double ld_ret_0s = 0;
+   for (int g_pos_440s = OrdersTotal() - 1; g_pos_440s >= 0; g_pos_440s--) 
+   {
+      if (OrderSelect(g_pos_440s, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_3)
+      if (OrderType() == OP_SELL) ld_ret_0s += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0s);
+}
+//
+  
+//
+double Proffitt_Buy_4() 
+{
+   double ld_ret_0 = 0;
+   for (int g_pos_440 = OrdersTotal() - 1; g_pos_440 >= 0; g_pos_440--) 
+   {
+      if (OrderSelect(g_pos_440, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_4)
+      if (OrderType() == OP_BUY) ld_ret_0 += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0);
+}
+
+double Proffitt_Sell_4() 
+{
+   double ld_ret_0s = 0;
+   for (int g_pos_440s = OrdersTotal() - 1; g_pos_440s >= 0; g_pos_440s--) 
+   {
+      if (OrderSelect(g_pos_440s, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_4)
+      if (OrderType() == OP_SELL) ld_ret_0s += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0s);
+}
+//
+  
+//
+double Proffitt_Buy_5() 
+{
+   double ld_ret_0 = 0;
+   for (int g_pos_440 = OrdersTotal() - 1; g_pos_440 >= 0; g_pos_440--) 
+   {
+      if (OrderSelect(g_pos_440, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_5)
+      if (OrderType() == OP_BUY) ld_ret_0 += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0);
+}
+
+double Proffitt_Sell_5() 
+{
+   double ld_ret_0s = 0;
+   for (int g_pos_440s = OrdersTotal() - 1; g_pos_440s >= 0; g_pos_440s--) 
+   {
+      if (OrderSelect(g_pos_440s, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_5)
+      if (OrderType() == OP_SELL) ld_ret_0s += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0s);
+}
+//
+  
+//
+double Proffitt_Buy_6() 
+{
+   double ld_ret_0 = 0;
+   for (int g_pos_440 = OrdersTotal() - 1; g_pos_440 >= 0; g_pos_440--) 
+   {
+      if (OrderSelect(g_pos_440, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_6)
+      if (OrderType() == OP_BUY) ld_ret_0 += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0);
+}
+
+double Proffitt_Sell_6() 
+{
+   double ld_ret_0s = 0;
+   for (int g_pos_440s = OrdersTotal() - 1; g_pos_440s >= 0; g_pos_440s--) 
+   {
+      if (OrderSelect(g_pos_440s, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_6)
+      if (OrderType() == OP_SELL) ld_ret_0s += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0s);
+}
+//
+  
+//
+double Proffitt_Buy_7() 
+{
+   double ld_ret_0 = 0;
+   for (int g_pos_440 = OrdersTotal() - 1; g_pos_440 >= 0; g_pos_440--) 
+   {
+      if (OrderSelect(g_pos_440, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_7)
+      if (OrderType() == OP_BUY) ld_ret_0 += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0);
+}
+
+double Proffitt_Sell_7() 
+{
+   double ld_ret_0s = 0;
+   for (int g_pos_440s = OrdersTotal() - 1; g_pos_440s >= 0; g_pos_440s--) 
+   {
+      if (OrderSelect(g_pos_440s, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_7)
+      if (OrderType() == OP_SELL) ld_ret_0s += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0s);
+}
+//
+  
+//
+double Proffitt_Buy_8() 
+{
+   double ld_ret_0 = 0;
+   for (int g_pos_440 = OrdersTotal() - 1; g_pos_440 >= 0; g_pos_440--) 
+   {
+      if (OrderSelect(g_pos_440, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_8)
+      if (OrderType() == OP_BUY) ld_ret_0 += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0);
+}
+
+double Proffitt_Sell_8() 
+{
+   double ld_ret_0s = 0;
+   for (int g_pos_440s = OrdersTotal() - 1; g_pos_440s >= 0; g_pos_440s--) 
+   {
+      if (OrderSelect(g_pos_440s, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_8)
+      if (OrderType() == OP_SELL) ld_ret_0s += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0s);
+}
+//
+  
+//
+double Proffitt_Buy_9() 
+{
+   double ld_ret_0 = 0;
+   for (int g_pos_440 = OrdersTotal() - 1; g_pos_440 >= 0; g_pos_440--) 
+   {
+      if (OrderSelect(g_pos_440, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Buy_OP_9)
+      if (OrderType() == OP_BUY) ld_ret_0 += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0);
+}
+
+double Proffitt_Sell_9() 
+{
+   double ld_ret_0s = 0;
+   for (int g_pos_440s = OrdersTotal() - 1; g_pos_440s >= 0; g_pos_440s--) 
+   {
+      if (OrderSelect(g_pos_440s, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol() && OrderMagicNumber() == Magic_Number_Sell_OP_9)
+      if (OrderType() == OP_SELL) ld_ret_0s += OrderProfit() + OrderSwap() + OrderCommission();
+   }
+   return (ld_ret_0s);
+}
+//
+ 
+//Deposit
+double Deposit_History_Y()//scan Deposit
+{
+    int order_nya_Y = 0;
+    double Deposit_History_Y = 0;
+        for ( int ig = 0; ig<OrdersHistoryTotal(); ig++) 
+        {
+            if(OrderSelect(ig, SELECT_BY_POS, MODE_HISTORY) == false) continue;
+            if(OrderType() > 5)
+            {
+                order_nya_Y++;
+                Deposit_History_Y += OrderProfit();
+            }
+        }
+    return(Deposit_History_Y);
+}
+//Deposit
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Close All Buy
+void closeallbuy()
+{
+   for (int pos_0BDbs = OrdersTotal() - 1; pos_0BDbs >= 0; pos_0BDbs--) 
+   {
+      if (OrderSelect(pos_0BDbs, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol())// && (OrderMagicNumber() == Magic_Number_Buy)) 
+      {  
+         if (OrderSymbol() == Symbol() && OrderType() == OP_BUY)
+         {
+            if(OrderClose(OrderTicket(), OrderLots(), OrderClosePrice(), 0, Green)==false) break;
+         }
+      }
+   }
+}
+
+void closeallbuy11()
+{
+   for (int pos_0BDbs = OrdersTotal() - 1; pos_0BDbs >= 0; pos_0BDbs--) 
+   {
+      if (OrderSelect(pos_0BDbs, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (true)
+      {  
+         if (OrderType() == OP_BUY)
+         {
+            if(OrderClose(OrderTicket(), OrderLots(), OrderClosePrice(), 0, Green)==false) break;
+         }
+      }
+   }
+}
+// Close All Buy
+
+// Close All Sell
+void closeallsell()
+{
+   for (int pos_0BDbs = OrdersTotal() - 1; pos_0BDbs >= 0; pos_0BDbs--) 
+   {
+      if (OrderSelect(pos_0BDbs, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (OrderSymbol() != Symbol()) continue;
+      if (OrderSymbol() == Symbol())// && (OrderMagicNumber() == Magic_Number_Sell)) 
+      {  
+         if (OrderSymbol() == Symbol() && OrderType() == OP_SELL) 
+         {
+            if(OrderClose(OrderTicket(), OrderLots(), OrderClosePrice(), 0, Red)==false) break;
+         }
+      }
+   }
+}
+
+void closeallsell11()
+{
+   for (int pos_0BDbs = OrdersTotal() - 1; pos_0BDbs >= 0; pos_0BDbs--) 
+   {
+      if (OrderSelect(pos_0BDbs, SELECT_BY_POS, MODE_TRADES)==false) continue;
+      if (true)// && (OrderMagicNumber() == Magic_Number_Sell)) 
+      {  
+         if (OrderType() == OP_SELL) 
+         {
+            if(OrderClose(OrderTicket(), OrderLots(), OrderClosePrice(), 0, Red)==false) break;
+         }
+      }
+   }
+}
+// Close All Sell
+
+
+double minimum_buy = 0;//Opened_Order_Open_Price_1() - Max_Min_Distance*Point;
+double maximum_buy = 0;//Opened_Order_Open_Price_1() + Max_Min_Distance*Point;
+double minimum_sell = 0;//Opened_Order_Open_Price_1() - Max_Min_Distance*Point;
+double maximum_sell = 0;//Opened_Order_Open_Price_1() + Max_Min_Distance*Point;
+bool   openBuy2 = false;
+bool   openBuy3 = false;
+bool   openBuy4 = false;
+bool   openBuy5 = false;
+bool   openBuy6 = false;
+bool   openBuy7 = false;
+bool   openBuy8 = false;
+bool   openBuy9 = false;
+bool   openSell2 = false;
+bool   openSell3 = false;
+bool   openSell4 = false;
+bool   openSell5 = false;
+bool   openSell6 = false;
+bool   openSell7 = false;
+bool   openSell8 = false;
+bool   openSell9 = false;
+
+// Opened order last lot data
+datetime All_Order_Open_Time[10];
+double   Order_Open_Time[10];
+void GetAllOpenedTrades(int number_of_trades=10)
+{
+   ArrayInitialize(All_Order_Open_Time,0);
+   ArrayInitialize(Order_Open_Time,0);
+   int count = 0; 
+   int Tickets[1500]; 
+   for(int cnt=0; cnt<OrdersTotal(); cnt++)
+   {
+      if(!OrderSelect(cnt,SELECT_BY_POS,MODE_TRADES)) continue;
+      if(OrderSymbol() != Symbol()) continue;
+      if(OrderComment() == "") continue;
+      Tickets[count] = OrderTicket();
+      count++;
+   }
+   
+   if(count==0) return;
+   
+   ArrayResize(Tickets,count);
+   ArraySort(Tickets,WHOLE_ARRAY,0,MODE_DESCEND);
+   for(int cnt=0; cnt<number_of_trades; cnt++)
+   {
+      if(cnt>=ArraySize(Tickets)) break;
+      if(OrderSelect(Tickets[cnt],SELECT_BY_TICKET,MODE_TRADES))
+      {
+         if(OrderType() <= 1){
+         All_Order_Open_Time[cnt]  = OrderOpenTime();
+         Order_Open_Time[cnt]  = OrderOpenPrice();}
+      }
+   }
+}
+//*------------------------------------------------------------------*
+datetime Last_Open_Time() { return(All_Order_Open_Time[0]); }
+double Last_Open_Harga() { return(Order_Open_Time[0]); }
+
+///
+// Last order closed time
+datetime All_Order_Open_Time_Closed[10];
+void GetAllClosedTrades(int number_of_trades_Closed=10)
+{
+   ArrayInitialize(All_Order_Open_Time_Closed,0);
+   int count = 0; 
+   int Tickets[1500]; 
+   for(int cnt=0; cnt<OrdersHistoryTotal(); cnt++)
+   {
+      if(!OrderSelect(cnt,SELECT_BY_POS,MODE_HISTORY)) continue;
+      if(OrderSymbol() != Symbol()) continue;
+      if(OrderComment() == "") continue;
+      Tickets[count] = OrderTicket();
+      count++;
+   }
+   
+   if(count==0) return;
+   
+   ArrayResize(Tickets,count);
+   ArraySort(Tickets,WHOLE_ARRAY,0,MODE_DESCEND);
+   for(int cnt=0; cnt<number_of_trades_Closed; cnt++)
+   {
+      if(cnt>=ArraySize(Tickets)) break;
+      if(OrderComment() == "") continue;
+      if(OrderSelect(Tickets[cnt],SELECT_BY_TICKET,MODE_HISTORY))
+      {
+         if(OrderType() <= 1){
+         All_Order_Open_Time_Closed[cnt]  = OrderCloseTime();}
+      }
+   }
+}
+//*------------------------------------------------------------------*
+datetime Last_Closed_Time() { return(All_Order_Open_Time_Closed[0]); }
+///
+
+bool Target_Tercapai = false;  
+double Profit_Today()//scan daily profit
+{
+    int time = 0;
+    int order_nya = 0;
+    double Profit_History = 0;
+    datetime on11 = iTime(Symbol(),PERIOD_D1,0);// Current Day open time
+    datetime on111 = iTime(Symbol(),PERIOD_D1,1);// Yesterday open time
+        for ( int i = OrdersHistoryTotal();i >= 1;i--) 
+        {
+            if(OrderSelect(i-1, SELECT_BY_POS, MODE_HISTORY) == false) continue;
+            if(OrderSymbol () != Symbol()) continue;
+            if(OrderCloseTime() <= on111) continue;
+            //buy:0 sell:1 buylimit:2 selllimit:3 buystop:4 sellstop:5
+            //if the ordertype is buy or sell
+            if(OrderType() <= 1 && OrderCloseTime() >= on11) 
+            {
+                order_nya++;
+                Profit_History += OrderProfit() + OrderSwap() + OrderCommission();
+            }
+        }
+    return(Profit_History);
+}
+
+//SL TP MONEY
+void SL_TP_MONEY()
+{
+if(AUTO_SL_SND == false){
+if (TAKE_PROFIT_NYA != 0)
+   {
+     if (keuntungan > TAKE_PROFIT_NYA) { close_basket(Symbol()); }
+   }
+if (STOP_LOSS_NYA != 0)
+   {
+     if (keuntungan < STOP_LOSS_NYA) { close_basket(Symbol()); }
+   }}
+}
+  
+double Candle_Profit()//scan TIME_FRAME_SND candle profit
+{
+    int time = 0;
+    int order_nya = 0;
+    double Profit_History = 0;
+    datetime on11 = iTime(Symbol(),PERIOD_CURRENT,0);// Current  open time
+    datetime on111 = iTime(Symbol(),PERIOD_CURRENT,1);// Previous open time
+        for ( int i = OrdersHistoryTotal();i >= 1;i--) 
+        {
+            if(OrderSelect(i-1, SELECT_BY_POS, MODE_HISTORY) == false) continue;
+            if(OrderSymbol () != Symbol()) continue;
+            if(OrderCloseTime() <= on111) continue;
+            //buy:0 sell:1 buylimit:2 selllimit:3 buystop:4 sellstop:5
+            //if the ordertype is buy or sell
+            if(OrderType() <= 1 && OrderCloseTime() >= on11) 
+            {
+                order_nya++;
+                Profit_History += OrderProfit() + OrderSwap() + OrderCommission();
+            }
+        }
+    return(Profit_History);
+}
+
+double Buy_Entry_Atas   = 0;
+double Buy_Entry_Bawah  = 0;
+double Sell_Entry_Atas  = 0;
+double Sell_Entry_Bawah = 0;
+double Buy_Entry_Zone_Atas = 0;
+double Buy_Entry_Zone_Bawah = 0;
+double Sell_Entry_Zone_Atas = 0;
+double Sell_Entry_Zone_Bawah = 0;
+double Buy_Entry_Zone_Atas_2 = 0;
+double Buy_Entry_Zone_Bawah_2 = 0;
+double Sell_Entry_Zone_Atas_2 = 0;
+double Sell_Entry_Zone_Bawah_2 = 0;
+
+datetime Buy_Entry_Zone_Atas_Time1 = 0;
+datetime Buy_Entry_Zone_Atas_Time2 = 0;
+datetime Buy_Entry_Zone_Atas_Time3 = 0;
+datetime Sell_Entry_Zone_Bawah_Time1 = 0;
+datetime Sell_Entry_Zone_Bawah_Time2 = 0;
+datetime Sell_Entry_Zone_Bawah_Time3 = 0;
+double Buy_SL_snd = 0;
+double Sell_SL_snd = 0;
+color Buy_color_1;
+color Buy_color_2;
+color Buy_color_3;
+color Buy_color_4;
+color Buy_color_5;
+color Buy_color_6;
+color Buy_color_7;
+color Buy_color_8;
+color Buy_color_9;
+color Buy_color_10;
+
+color Sell_color_1;
+color Sell_color_2;
+color Sell_color_3;
+color Sell_color_4;
+color Sell_color_5;
+color Sell_color_6;
+color Sell_color_7;
+color Sell_color_8;
+color Sell_color_9;
+color Sell_color_10;
+
+double Sell_Not_Allowed;
+double Buy_Not_Allowed;
+double Middle_zone;
+double Middle_zone_bagi2;
+double Middle_zone_bagi3;
+double Middle_zone_bagi4;
+
+//
+
+void SUPDEM()
+{
+double SupDem_Entry = iCustom(Symbol(), TIME_FRAME_SND, "[MP161_SND_TF]", TIME_FRAME_SND,0,0);
+//LIMIT
+Sell_Not_Allowed  = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1DNZONE",OBJPROP_PRICE1);
+Buy_Not_Allowed   = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1UPZONE",OBJPROP_PRICE2);
+Middle_zone       = (Sell_Not_Allowed + ((Buy_Not_Allowed - Sell_Not_Allowed)/2));
+Middle_zone_bagi2 = (Sell_Not_Allowed + ((Middle_zone - Sell_Not_Allowed)/2));
+Middle_zone_bagi3 = (Sell_Not_Allowed + ((Middle_zone_bagi2 - Sell_Not_Allowed)/2));
+Middle_zone_bagi4 = (Sell_Not_Allowed + ((Middle_zone_bagi3 - Sell_Not_Allowed)/2));
+
+ObjectDelete("Middle_zone");
+ObjectCreate("Middle_zone",OBJ_HLINE,0,0,Middle_zone);
+ObjectSet("Middle_zone",OBJPROP_COLOR,clrYellow);
+ObjectSet("Middle_zone",OBJPROP_STYLE,1);
+ObjectDelete("Middle_zone_bagi2");
+ObjectCreate("Middle_zone_bagi2",OBJ_HLINE,0,0,Middle_zone_bagi2);
+ObjectSet("Middle_zone_bagi2",OBJPROP_COLOR,clrYellow);
+ObjectSet("Middle_zone_bagi2",OBJPROP_STYLE,1);
+ObjectDelete("Middle_zone_bagi3");
+ObjectCreate("Middle_zone_bagi3",OBJ_HLINE,0,0,Middle_zone_bagi3);
+ObjectSet("Middle_zone_bagi3",OBJPROP_COLOR,clrYellow);
+ObjectSet("Middle_zone_bagi3",OBJPROP_STYLE,1);
+ObjectDelete("Middle_zone_bagi4");
+ObjectCreate("Middle_zone_bagi4",OBJ_HLINE,0,0,Middle_zone_bagi4);
+ObjectSet("Middle_zone_bagi4",OBJPROP_COLOR,clrYellow);
+ObjectSet("Middle_zone_bagi4",OBJPROP_STYLE,1);
+//LIMIT
+
+//ENTRY
+    if (ObjectFind(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1DNZONE") != -1) {
+    if(
+    Buy_Entry_Atas != ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1DNZONE",OBJPROP_PRICE1)
+    ){
+    Buy_Entry_Atas = Buy_Entry_Zone_Atas;//BUY
+    ObjectDelete("Buy_Entry_Zone_Atas_Time1_["+TimeToStr(Buy_Entry_Zone_Atas_Time1,TIME_DATE|TIME_SECONDS)+"]");
+    Buy_Entry_Zone_Atas_Time1 = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1DNZONE",OBJPROP_TIME1);
+    Buy_Entry_Zone_Atas_Time2 = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2DNZONE",OBJPROP_TIME1);
+    Buy_Entry_Zone_Atas_Time3 = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"3DNZONE",OBJPROP_TIME1);
+    Buy_Entry_Zone_Atas      = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1DNZONE",OBJPROP_PRICE1);
+    Buy_Entry_Zone_Bawah     = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1DNZONE",OBJPROP_PRICE2);
+    Buy_color_1                = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1DNZONE",OBJPROP_COLOR);
+    Buy_Entry_Zone_Atas_2      = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2DNZONE",OBJPROP_PRICE1);
+    Buy_Entry_Zone_Bawah_2     = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2DNZONE",OBJPROP_PRICE2);
+    Buy_color_2                = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2DNZONE",OBJPROP_COLOR);
+    Buy_SL_snd               = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2DNZONE",OBJPROP_PRICE1);
+    ObjectCreate("Buy_Entry_Zone_Atas_Time1_["+TimeToStr(Buy_Entry_Zone_Atas_Time1,TIME_DATE|TIME_SECONDS)+"]", OBJ_VLINE,0,Buy_Entry_Zone_Atas_Time1,0);
+    ObjectSetInteger(0,"Buy_Entry_Zone_Atas_Time1_["+TimeToStr(Buy_Entry_Zone_Atas_Time1,TIME_DATE|TIME_SECONDS)+"]",OBJPROP_COLOR,clrBlue);
+    ObjectDelete("Buy_Entry_Zone_Atas");
+    ObjectDelete("Buy_Entry_Label_Atas");
+    ObjectDelete("Buy_Entry_Zone_Bawah");
+    ObjectDelete("Buy_Entry_Label_Bawah");
+    ObjectDelete("Buy_Entry_Zone_Atas_2");
+    ObjectDelete("Buy_Entry_Label_Atas_2");
+    ObjectDelete("Buy_Entry_Zone_Bawah_2");
+    ObjectDelete("Buy_Entry_Label_Bawah_2");
+    if(/*BNB_ENTRI_SINYAL_UP == 22.0 && */Buy_color_1 == clrDimGray && Buy_Entry_Zone_Atas_Time1 > Sell_Entry_Zone_Bawah_Time1){
+    ObjectDelete("Sell_Entry_Zone_Bawah");
+    ObjectDelete("Sell_Entry_Label_Bawah");
+    ObjectDelete("Sell_Entry_Zone_Atas");
+    ObjectDelete("Sell_Entry_Label_Atas");
+    ObjectDelete("Sell_Entry_Zone_Bawah_2");
+    ObjectDelete("Sell_Entry_Label_Bawah_2");
+    ObjectDelete("Sell_Entry_Zone_Atas_2");
+    ObjectDelete("Sell_Entry_Label_Atas_2");
+    
+    ObjectCreate("Buy_Entry_Zone_Atas",OBJ_HLINE,0,0,Buy_Entry_Zone_Atas);
+    ObjectSet("Buy_Entry_Zone_Atas",OBJPROP_COLOR,Buy_color_1);
+    ObjectSet("Buy_Entry_Zone_Atas",OBJPROP_STYLE,1);   
+
+    ObjectCreate("Buy_Entry_Label_Atas", OBJ_TEXT, 0, Time[0]+Period()*60*1*4, Buy_Entry_Zone_Atas);
+    ObjectSetText("Buy_Entry_Label_Atas","Buy__Zone_Atas ["+PeriodToStr(TIME_FRAME_SND)+"]", 10, "Arial", clrBlue);
+    ObjectSetInteger(0,"Buy_Entry_Label_Atas",OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
+    
+    ObjectCreate("Buy_Entry_Zone_Bawah",OBJ_HLINE,0,0,Buy_Entry_Zone_Bawah);
+    ObjectSet("Buy_Entry_Zone_Bawah",OBJPROP_COLOR,Buy_color_1);
+    ObjectSet("Buy_Entry_Zone_Bawah",OBJPROP_STYLE,1);   
+ 
+    ObjectCreate("Buy_Entry_Label_Bawah", OBJ_TEXT, 0, Time[0]+Period()*60*1*4, Buy_Entry_Zone_Bawah);
+    ObjectSetText("Buy_Entry_Label_Bawah","Buy__Zone_Bawah ["+PeriodToStr(TIME_FRAME_SND)+"]", 10, "Arial", clrBlue);
+    ObjectSetInteger(0,"Buy_Entry_Label_Bawah",OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
+    /////////////
+    ObjectCreate("Buy_Entry_Zone_Atas_2",OBJ_HLINE,0,0,Buy_Entry_Zone_Atas_2);
+    ObjectSet("Buy_Entry_Zone_Atas_2",OBJPROP_COLOR,Buy_color_1);
+    ObjectSet("Buy_Entry_Zone_Atas_2",OBJPROP_STYLE,1);   
+
+    ObjectCreate("Buy_Entry_Label_Atas_2", OBJ_TEXT, 0, Time[0]+Period()*60*1*4, Buy_Entry_Zone_Atas_2);
+    ObjectSetText("Buy_Entry_Label_Atas_2","Buy__Zone_Atas_2 ["+PeriodToStr(TIME_FRAME_SND)+"]", 10, "Arial", clrBlue);
+    ObjectSetInteger(0,"Buy_Entry_Label_Atas_2",OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
+    
+    ObjectCreate("Buy_Entry_Zone_Bawah_2",OBJ_HLINE,0,0,Buy_Entry_Zone_Bawah_2);
+    ObjectSet("Buy_Entry_Zone_Bawah_2",OBJPROP_COLOR,Buy_color_1);
+    ObjectSet("Buy_Entry_Zone_Bawah_2",OBJPROP_STYLE,1);   
+
+    ObjectCreate("Buy_Entry_Label_Bawah_2", OBJ_TEXT, 0, Time[0]+Period()*60*1*4, Buy_Entry_Zone_Bawah_2);
+    ObjectSetText("Buy_Entry_Label_Bawah_2","Buy__Zone_Bawah_2 ["+PeriodToStr(TIME_FRAME_SND)+"]", 10, "Arial", clrBlue);
+    ObjectSetInteger(0,"Buy_Entry_Label_Bawah_2",OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
+    //////////
+    }
+    }}
+    
+    if (ObjectFind(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1UPZONE") != -1){
+    if(
+    Sell_Entry_Bawah != ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1UPZONE",OBJPROP_PRICE2)
+    ){
+    Sell_Entry_Bawah  = Sell_Entry_Zone_Bawah;//SELL
+    ObjectDelete("Sell_Entry_Zone_Bawah_Time1_["+TimeToStr(Sell_Entry_Zone_Bawah_Time1,TIME_DATE|TIME_SECONDS)+"]");
+    Sell_Entry_Zone_Bawah_Time1 = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1UPZONE",OBJPROP_TIME1);
+    Sell_Entry_Zone_Bawah_Time2 = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2UPZONE",OBJPROP_TIME1);
+    Sell_Entry_Zone_Bawah_Time3 = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"3UPZONE",OBJPROP_TIME1);
+    Sell_Entry_Zone_Bawah      = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1UPZONE",OBJPROP_PRICE2);
+    Sell_Entry_Zone_Atas       = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1UPZONE",OBJPROP_PRICE1);
+    Sell_color_1                 = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"1UPZONE",OBJPROP_COLOR);
+    Sell_Entry_Zone_Bawah_2      = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2UPZONE",OBJPROP_PRICE2);
+    Sell_Entry_Zone_Atas_2       = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2UPZONE",OBJPROP_PRICE1);
+    Sell_color_2                 = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2UPZONE",OBJPROP_COLOR);
+    Sell_SL_snd                = ObjectGet(""+Symbol()+"_aII_SupDem_"+IntegerToString(TIME_FRAME_SND,0)+"2UPZONE",OBJPROP_PRICE2);
+    ObjectCreate("Sell_Entry_Zone_Bawah_Time1_["+TimeToStr(Sell_Entry_Zone_Bawah_Time1,TIME_DATE|TIME_SECONDS)+"]", OBJ_VLINE,0,Sell_Entry_Zone_Bawah_Time1,0);
+    ObjectSetInteger(0,"Sell_Entry_Zone_Bawah_Time1_["+TimeToStr(Sell_Entry_Zone_Bawah_Time1,TIME_DATE|TIME_SECONDS)+"]",OBJPROP_COLOR,clrRed);
+    ObjectDelete("Sell_Entry_Zone_Bawah");
+    ObjectDelete("Sell_Entry_Label_Bawah");
+    ObjectDelete("Sell_Entry_Zone_Atas");
+    ObjectDelete("Sell_Entry_Label_Atas");
+    ObjectDelete("Sell_Entry_Zone_Bawah_2");
+    ObjectDelete("Sell_Entry_Label_Bawah_2");
+    ObjectDelete("Sell_Entry_Zone_Atas_2");
+    ObjectDelete("Sell_Entry_Label_Atas_2");
+    if(/*BNB_ENTRI_SINYAL_DOWN == 11.0 && */Sell_color_1 == clrDarkGreen && Buy_Entry_Zone_Atas_Time1 < Sell_Entry_Zone_Bawah_Time1){
+    ObjectDelete("Buy_Entry_Zone_Atas");
+    ObjectDelete("Buy_Entry_Label_Atas");
+    ObjectDelete("Buy_Entry_Zone_Bawah");
+    ObjectDelete("Buy_Entry_Label_Bawah");
+    ObjectDelete("Buy_Entry_Zone_Atas_2");
+    ObjectDelete("Buy_Entry_Label_Atas_2");
+    ObjectDelete("Buy_Entry_Zone_Bawah_2");
+    ObjectDelete("Buy_Entry_Label_Bawah_2");
+    
+    ObjectCreate("Sell_Entry_Zone_Bawah",OBJ_HLINE,0,0,Sell_Entry_Zone_Bawah);
+    ObjectSet("Sell_Entry_Zone_Bawah",OBJPROP_COLOR,Sell_color_1);
+    ObjectSet("Sell_Entry_Zone_Bawah",OBJPROP_STYLE,1);
+    
+    ObjectCreate("Sell_Entry_Label_Bawah", OBJ_TEXT, 0, Time[0]+Period()*60*1*4, Sell_Entry_Zone_Bawah);
+    ObjectSetText("Sell_Entry_Label_Bawah","Sell__Zone_Bawah ["+PeriodToStr(TIME_FRAME_SND)+"]", 10, "Arial", clrRed);
+    ObjectSetInteger(0,"Sell_Entry_Label_Bawah",OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
+    
+    ObjectCreate("Sell_Entry_Zone_Atas",OBJ_HLINE,0,0,Sell_Entry_Zone_Atas);
+    ObjectSet("Sell_Entry_Zone_Atas",OBJPROP_COLOR,Sell_color_1);
+    ObjectSet("Sell_Entry_Zone_Atas",OBJPROP_STYLE,1);
+    
+    ObjectCreate("Sell_Entry_Label_Atas", OBJ_TEXT, 0, Time[0]+Period()*60*1*4, Sell_Entry_Zone_Atas);
+    ObjectSetText("Sell_Entry_Label_Atas","Sell__Zone_Atas ["+PeriodToStr(TIME_FRAME_SND)+"]", 10, "Arial", clrRed);
+    ObjectSetInteger(0,"Sell_Entry_Label_Atas",OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
+    ///////
+    ObjectCreate("Sell_Entry_Zone_Bawah_2",OBJ_HLINE,0,0,Sell_Entry_Zone_Bawah_2);
+    ObjectSet("Sell_Entry_Zone_Bawah_2",OBJPROP_COLOR,Sell_color_1);
+    ObjectSet("Sell_Entry_Zone_Bawah_2",OBJPROP_STYLE,1);
+    
+    ObjectCreate("Sell_Entry_Label_Bawah_2", OBJ_TEXT, 0, Time[0]+Period()*60*1*4, Sell_Entry_Zone_Bawah_2);
+    ObjectSetText("Sell_Entry_Label_Bawah_2","Sell__Zone_Bawah_2 ["+PeriodToStr(TIME_FRAME_SND)+"]", 10, "Arial", clrRed);
+    ObjectSetInteger(0,"Sell_Entry_Label_Bawah_2",OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
+    
+    ObjectCreate("Sell_Entry_Zone_Atas_2",OBJ_HLINE,0,0,Sell_Entry_Zone_Atas_2);
+    ObjectSet("Sell_Entry_Zone_Atas_2",OBJPROP_COLOR,Sell_color_1);
+    ObjectSet("Sell_Entry_Zone_Atas_2",OBJPROP_STYLE,1);
+    
+    ObjectCreate("Sell_Entry_Label_Atas_2", OBJ_TEXT, 0, Time[0]+Period()*60*1*4, Sell_Entry_Zone_Atas_2);
+    ObjectSetText("Sell_Entry_Label_Atas_2","Sell__Zone_Atas_2 ["+PeriodToStr(TIME_FRAME_SND)+"]", 10, "Arial", clrRed);
+    ObjectSetInteger(0,"Sell_Entry_Label_Atas_2",OBJPROP_ANCHOR,ANCHOR_LEFT_LOWER);
+    ///////
+    }
+    }}
+    
+    //
+    ObjectCreate("Last_Order_Closed_Time_["+TimeToStr(Last_Closed_Time(),TIME_DATE|TIME_SECONDS)+"]", OBJ_VLINE,0,Last_Closed_Time(),0);
+    ObjectSetInteger(0,"Last_Order_Closed_Time_["+TimeToStr(Last_Closed_Time(),TIME_DATE|TIME_SECONDS)+"]",OBJPROP_COLOR,clrYellow);
+    //
+    if(AUTO_SL_SND == false){
+    ObjectDelete("BUY_SL_[]");
+    ObjectCreate("BUY_SL_[]",OBJ_HLINE,0,0,Buy_SL_snd);
+       ObjectSet("BUY_SL_[]",OBJPROP_COLOR,clrRed);
+       ObjectSet("BUY_SL_[]",OBJPROP_STYLE,1);
+       
+    ObjectDelete("BUY_SL_[½]");
+    ObjectCreate("BUY_SL_[½]",OBJ_HLINE,0,0,Buy_SL_snd+((Last_Open_Harga()-Buy_SL_snd)/2));
+       ObjectSet("BUY_SL_[½]",OBJPROP_COLOR,clrWhite);
+       ObjectSet("BUY_SL_[½]",OBJPROP_STYLE,1);
+   
+    ObjectDelete("SELL_SL_[]");
+    ObjectCreate("SELL_SL_[]",OBJ_HLINE,0,0,Sell_SL_snd);
+       ObjectSet("SELL_SL_[]",OBJPROP_COLOR,clrRed);
+       ObjectSet("SELL_SL_[]",OBJPROP_STYLE,1);
+   
+    ObjectDelete("SELL_SL_[½]");
+    ObjectCreate("SELL_SL_[½]",OBJ_HLINE,0,0,Sell_SL_snd-((Sell_SL_snd-Last_Open_Harga())/2));
+       ObjectSet("SELL_SL_[½]",OBJPROP_COLOR,clrRed);
+       ObjectSet("SELL_SL_[½]",OBJPROP_STYLE,1);
+    }
+    
+ 
+//Entry bnb
+if(BNB_ENTRI_SINYAL_UP == 22.0 && BNB_ENTRI_SINYAL_DOWN == 0.0) { Sinyal_bnb_ENTRY_OP = "UP Trend !!"; } 
+if(BNB_ENTRI_SINYAL_UP == 0.0  && BNB_ENTRI_SINYAL_DOWN == 11.0){ Sinyal_bnb_ENTRY_OP = "DOWN Trend !!"; } 
+if(BNB_ENTRI_SINYAL_UP == 0.0  && BNB_ENTRI_SINYAL_DOWN == 0.0) { Sinyal_bnb_ENTRY_OP = "Menunggu....."; }
+
+//Exit bnb
+if(BNB_EXIT_SINYAL_UP == 22.0 && BNB_EXIT_SINYAL_DOWN == 0.0) { Sinyal_bnb_EXIT_OP = "Up Trend"; } 
+if(BNB_EXIT_SINYAL_UP == 0.0  && BNB_EXIT_SINYAL_DOWN == 11.0){ Sinyal_bnb_EXIT_OP = "Down Trend"; } 
+if(BNB_EXIT_SINYAL_UP == 0.0  && BNB_EXIT_SINYAL_DOWN == 0.0) { Sinyal_bnb_EXIT_OP = "Waiting..."; }
+
+//Entry snd OP 1
+if(Buy_Entry_Zone_Atas_Time1 > Sell_Entry_Zone_Bawah_Time1 && 
+   Buy_color_1 == clrDimGray &&
+   ((ObjectFind("Buy_Entry_Zone_Atas") != -1) && 
+   (ObjectFind("Buy_Entry_Zone_Bawah") != -1))
+  )
+  { Sinyal_snd_OP_1 = "UP"; }
+   
+if(Buy_Entry_Zone_Atas_Time1 < Sell_Entry_Zone_Bawah_Time1 && 
+   Sell_color_1 == clrDarkGreen &&
+   ((ObjectFind("Sell_Entry_Zone_Atas") != -1) && 
+   (ObjectFind("Sell_Entry_Zone_Bawah") != -1))
+  ) 
+  { Sinyal_snd_OP_1 = "DOWN"; }
+   
+if(((ObjectFind("Buy_Entry_Zone_Atas")   == -1) && 
+    (ObjectFind("Buy_Entry_Zone_Bawah")  == -1)) &&
+   ((ObjectFind("Sell_Entry_Zone_Atas")  == -1) && 
+    (ObjectFind("Sell_Entry_Zone_Bawah") == -1))
+  )
+  { Sinyal_snd_OP_1 = "MENUNGGU..."; }
+
+//Entry snd OP 1 2x baru tdk tersentuh.
+if(Buy_Entry_Zone_Atas_Time1 > Sell_Entry_Zone_Bawah_Time1 && ((Buy_Entry_Zone_Atas_Time2 > Sell_Entry_Zone_Bawah_Time1) || (Buy_Entry_Zone_Atas_Time2 < Sell_Entry_Zone_Bawah_Time1)) &&
+   (((Buy_color_1 == clrBlue || Buy_color_1 == clrDimGray) && (Buy_color_2 == clrBlue || Buy_color_2 == clrDimGray)/* && Sell_color_1 == clrBrown*/) &&
+   Sinyal_snd_OP_1 == "MENUNGGU...")
+  )
+  { Sinyal_snd_OP_1_2x = "UP"; }
+   
+if(Buy_Entry_Zone_Atas_Time1 < Sell_Entry_Zone_Bawah_Time1 && ((Buy_Entry_Zone_Atas_Time1 < Sell_Entry_Zone_Bawah_Time2) || (Buy_Entry_Zone_Atas_Time1 > Sell_Entry_Zone_Bawah_Time2)) && 
+   (((Sell_color_1 == clrBrown || Sell_color_1 == clrDarkGreen) && (Sell_color_2 == clrBrown || Sell_color_2 == clrDarkGreen)/* && Buy_color_1 == clrBlue*/) &&
+   Sinyal_snd_OP_1 == "MENUNGGU...")
+  ) 
+  { Sinyal_snd_OP_1_2x = "DOWN"; }
+ /* 
+//Touch ing box signal
+if(Buy_color_1 == clrDimGray && Ask < Middle_zone && Bid > Sell_Not_Allowed)
+  {
+   Sinyal_snd_OP_1 = "UP";
+   Sinyal_snd_OP_1_2x = "UP";
+  }
+if(Sell_color_1 == clrDarkGreen && Bid > Middle_zone && Ask < Buy_Not_Allowed)
+  {
+   Sinyal_snd_OP_1 = "DOWN";
+   Sinyal_snd_OP_1_2x = "DOWN";
+  }
+ */ 
+
+
+Comment
+      ("\n"
+      + "\n"
+      ""+ "S N D ["+PeriodToStr(TIME_FRAME_SND)+"]  ENTRY Sentuh [OP_1] :  " + Sinyal_snd_OP_1
+      + "\n"
+      ""+ "S N D ["+PeriodToStr(TIME_FRAME_SND)+"]  ENTRY 2x Tdk Sentuh [OP_1] :  " + Sinyal_snd_OP_1_2x
+      + "\n"
+      + "\n"
+      ""+ "B N B ["+PeriodToStr(TIMEFRAME_BNB_ENTRY)+"]  ENTRY Signal :  " + Sinyal_bnb_ENTRY_OP
+      + "\n"
+      + "\n"
+      ""+ "B N B ["+PeriodToStr(TIMEFRAME_BNB_CLOSING)+"]  EXIT Signal :  " + Sinyal_bnb_EXIT_OP
+      + "\n"
+      + "\n"
+      ""+ "Profit Total "+DoubleToStr(keuntungan,2)+"  " + AccountCurrency()
+      + "\n"
+      + "\n"
+      ""+ "Minimum Auto Close At  "+DoubleToStr((3*MarketInfo(Symbol(), MODE_SPREAD)*(LOT_SIZE_AUTO_TRADE*totalorder)),2)+"  " + AccountCurrency()
+      + "\n"
+      + "\n"
+      ""+ "TOTAL OPEN  :  "+IntegerToString(totalorder,0)+""
+      + "\n"
+      + "\n"
+      ""+ "Last Buy SnD Time 1  :  "+TimeToString(Buy_Entry_Zone_Atas_Time1,TIME_DATE|TIME_MINUTES|TIME_SECONDS)+""
+      + "\n"
+      ""+ "Last Buy SnD Time 2  :  "+TimeToString(Buy_Entry_Zone_Atas_Time2,TIME_DATE|TIME_MINUTES|TIME_SECONDS)+""
+      + "\n"
+      ""+ "Last Sell SnD Time 1   :  "+TimeToString(Sell_Entry_Zone_Bawah_Time1,TIME_DATE|TIME_MINUTES|TIME_SECONDS)+""
+      + "\n"
+      ""+ "Last Sell SnD Time 2   :  "+TimeToString(Sell_Entry_Zone_Bawah_Time2,TIME_DATE|TIME_MINUTES|TIME_SECONDS)+""
+      + "\n"
+      ""+ "Last Order Opened Time  :  "+TimeToString(Last_Open_Time(),TIME_DATE|TIME_MINUTES|TIME_SECONDS)+""
+      + "\n"
+      ""+ "Last Order Closed Time  :  "+TimeToString(Last_Closed_Time(),TIME_DATE|TIME_MINUTES|TIME_SECONDS)+""
+      + "\n"
+      + "\n"
+      + "\n"
+      ""+ "NO NEW TRADE AT TIME : "+TimeToString(filter_time_1,TIME_DATE|TIME_MINUTES|TIME_SECONDS)+" TO "+TimeToString(filter_time_2+(60*60*24),TIME_DATE|TIME_MINUTES|TIME_SECONDS)+"" 
+      + "\n"
+      ""+ "Current HOUR : "+TimeHour(TimeCurrent())+"" 
+      + "\n"
+      ""+ "CURRENT TIME : "+TimeToString(TimeCurrent(),TIME_DATE|TIME_MINUTES|TIME_SECONDS)+"" 
+      + "\n"
+      + "\n"
+      ""+ "TIME FILTER STATUS : "+Trade_time_filter+"" 
+      + "\n"
+      + "\n"
+      + "\n"
+      ""+ "Current CANDLE Profit "+DoubleToStr(Candle_Profit(),2)+"  " + AccountCurrency()
+      + "\n"
+      
+ /*
+datetime filter_time_1 = D'21:30:01';
+datetime filter_time_2 = D'03:00:01';
+bool     TRADE_TIME_ALOWED = false;
+string Trade_time_filter = " ";     
+ */     
+      );
+      
+if(Candle_Profit() != 0.0)
+{
+Print("Current CANDLE Profit "+DoubleToStr(Candle_Profit(),2)+"  " + AccountCurrency()
+      + "");
+Print("Last Order Closed Time  :  "+TimeToString(Last_Closed_Time(),TIME_DATE|TIME_MINUTES|TIME_SECONDS)+"");
+Print("Open Order Not Allowed");
+
+}
+
+   
+return;}
+
+
